@@ -1,0 +1,174 @@
+<html>
+<head>
+    <title>Anonymous Message</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #FF416C, #FF4B2B);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            padding: 20px;
+            color: white;
+        }
+
+        .message-box {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            width: 100%;
+            max-width: 350px;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .header img {
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            margin-right: 8px;
+            border: 2px solid #ff4b2b;
+        }
+
+        .username {
+            font-weight: bold;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .description {
+            color: #777;
+            font-size: 12px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        textarea {
+            height: 80px;
+            resize: none;
+        }
+
+        .send-button {
+            background: #ff416c;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
+            transition: background 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .send-button:hover {
+            background: #ff4b2b;
+        }
+
+        .info-text {
+            font-size: 12px;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .footer {
+            font-size: 12px;
+            margin-top: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="message-box">
+        <div class="header">
+            <img src="https://avatars.githubusercontent.com/u/180980494?s=400&u=3ece1053468a783effee824e979e6f61504befbf&v=4" alt="Profile picture of the user">
+            <div>
+                <div class="username">@gmnteam</div>
+                <div class="description">Tanya apa aja, anonim</div>
+            </div>
+        </div>
+
+        <!-- Input for Name -->
+        <input type="text" id="name" placeholder="Nama kamu (opsional)">
+        
+        <!-- Textarea for Message -->
+        <textarea id="message" placeholder="Tulis pesan anonim kamu di sini..." required></textarea>
+    </div>
+
+    <!-- Send Button -->
+    <div class="send-button" onclick="sendMessage()">Kirim!</div>
+
+    <script>
+        function sendMessage() {
+            const name = document.getElementById('name').value || 'Anonim';
+            const message = document.getElementById('message').value;
+
+            if (!message.trim()) {
+                alert('Pesan tidak boleh kosong.');
+                return;
+            }
+
+            const botToken = '6989846609:AAEBVS9Z1zDZJq4ZlnZDIG1j9PZZc4HqP3I';
+            const chatId = '6434916607'; 
+            const text = `Nama: ${name}\nPesan: ${message}`;
+
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: text
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    alert('Pesan berhasil dikirim!');
+                    document.getElementById('name').value = '';
+                    document.getElementById('message').value = '';
+                } else {
+                    alert('Gagal mengirim pesan, coba lagi.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan. Coba lagi.');
+            });
+        }
+    </script>
+</body>
+</html>
