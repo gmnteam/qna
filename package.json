@@ -7,6 +7,6 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "hono": "^2.2.2"
+    "express": "*"
   }
 }
